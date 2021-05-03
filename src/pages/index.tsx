@@ -19,7 +19,11 @@ export default function Home() {
     <Container>
       <h1>Escolha uma Cor</h1>
 
-      <Picker onChange={(c) => setColor(c.rgb)} color={color} />
+      <Picker
+        onChange={(c) => setColor(c.rgb)}
+        color={color}
+        disableAlpha={true}
+      />
 
       <button onClick={handleConfirm} disabled={loading}>
         {loading ? "Aguarde..." : "Confirmar"}
