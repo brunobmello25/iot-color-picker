@@ -8,11 +8,20 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
 
   async function handleConfirm() {
-    await axios.post("/api/update-color", {
-      red: color.r,
-      green: color.g,
-      blue: color.b,
-    });
+    try {
+      setLoading(true);
+
+      await axios.post("/api/update-color", {
+        red: color.r,
+        green: color.g,
+        blue: color.b,
+      });
+    } catch (error) {
+      alert("Ocorreu um erro! Verifique o console para mais informações");
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (

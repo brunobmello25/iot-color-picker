@@ -5,19 +5,25 @@ export default async function handler(
   request: NextApiRequest,
   response: NextApiResponse
 ) {
-  const { red, green, blue } = request.body;
+  try {
+    const { red, green, blue } = request.body;
 
-  const data = {
-    red,
-    green,
-    blue,
-  };
+    const client = MQTT.connect(process.env.MQTT_BROKER);
 
-  const client = MQTT.connect(process.env.MQTT_BROKER);
+    await client.publish(
+      "color_control",
+      JSON.stringify({
+        red,
+        green,
+        blue,
+      })
+    );
 
-  await client.publish("color_control", JSON.stringify(data));
+    await client.end();
 
-  await client.end();
-
-  return response.status(200).json({ ok: true });
+    return response.status(200).json({ ok: true });
+  } catch (error) {
+    console.log(error);
+    response.status(500).json({ error });
+  }
 }
